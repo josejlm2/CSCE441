@@ -10,7 +10,8 @@
 #define WINDOW_HEIGHT 600
 
 //GLOBAL VARIABLES
-float SIZE =1;
+float SIZE = 1;
+float ROTATE_ANGLE = 0;
 bool QUAD = true;
 bool TRIANGLE = false;
 bool LINE = false;
@@ -21,6 +22,9 @@ void display ( void )
 	glClear ( GL_COLOR_BUFFER_BIT );
 	glFlush ( );//make sure everything is drawn
 }
+
+
+
 
 void brushSelection()
 {
@@ -69,13 +73,24 @@ void line(int x, int y)
 void quad(int x, int y)
 {
 	//glColor3f ( 1, 0, 0 );
-	
+	/*
 	glBegin ( GL_QUADS );
 		glVertex2f ( x-(2*SIZE), y+(2*SIZE));
 		glVertex2f ( x-(2*SIZE), y-(2*SIZE));
 		glVertex2f ( x+(2*SIZE), y-(2*SIZE));
 		glVertex2f ( x+(2*SIZE), y+(2*SIZE));
+	glEnd ( );*/
+
+	glBegin ( GL_QUADS );
+		glVertex2f ( 0-(2*SIZE), 0+(2*SIZE));
+		glVertex2f ( 0-(2*SIZE), 0-(2*SIZE));
+		glVertex2f ( 0+(2*SIZE), 0-(2*SIZE));
+		glVertex2f ( 0+(2*SIZE), 0+(2*SIZE));
 	glEnd ( );
+	
+	
+
+
 	/*
 	glPushMatrix();
 		glBegin ( GL_QUADS );
@@ -86,7 +101,7 @@ void quad(int x, int y)
 		glEnd ( );
 	*/
 
-	glPopMatrix();
+	//glPopMatrix();
 	//float tempX = x;
 	//float tempY = y;
 	glFlush ( );
@@ -105,6 +120,16 @@ void circle(int x, int y)
 }
 
 
+void changeRotateAngle()
+{
+	if (ROTATE_ANGLE == 360)
+	{
+		ROTATE_ANGLE = 10;
+	}
+	else 
+		ROTATE_ANGLE += 10;
+}
+
 //accept keyboard input
 void keyboard ( unsigned char key, int x, int y )
 {
@@ -118,7 +143,7 @@ void keyboard ( unsigned char key, int x, int y )
 			glutPostRedisplay ( );
 			break;
 		case 'r':
-			
+			changeRotateAngle();
 			break;
 		case 'a':
 			break;
@@ -182,6 +207,7 @@ void init ( void )
 	glEnable(GL_BLEND); // needed for circle blend effect
 }
 
+/*
 void mouseMove ( int x, int y )
 {
 	if (QUAD == true)
@@ -201,12 +227,17 @@ void mouseMove ( int x, int y )
 		circle(x,y);
 	}
 }
-
+*/
 void mouseClick(int button, int state, int x, int y)
 {
 	if (QUAD == true)
 	{
+		glTranslatef(x, y, 0);
+		glRotatef(ROTATE_ANGLE,0,0,1);
 		quad(x,y);
+		glRotatef(ROTATE_ANGLE,0,0,-1);
+		glTranslatef(-x, -y, 0);
+		
 	}
 	else if (TRIANGLE == true)
 	{
@@ -231,7 +262,7 @@ int main ( int argc, char *argv[] )
     glutCreateWindow ("Jose Manriquez - Assignment 1");
     init ();
     glutDisplayFunc(display);
-	glutMotionFunc ( mouseMove );
+	//glutMotionFunc ( mouseMove );
 	glutKeyboardFunc ( keyboard );
 	glutMouseFunc(mouseClick);
 	glutMainLoop ( );
