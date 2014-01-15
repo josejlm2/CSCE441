@@ -126,10 +126,17 @@ void keyboard ( unsigned char key, int x, int y )
 
 		//RESIZE BRUSH
 		case '+':
-			SIZE = SIZE*2;
+			if (SIZE != 128)
+			{
+				SIZE = SIZE*2;
+			}
+			
 			break;
 		case '-':
-			SIZE = SIZE*.5;
+			if (SIZE != 1)
+			{
+				SIZE = SIZE*.5;
+			}
 			break;
 
 
