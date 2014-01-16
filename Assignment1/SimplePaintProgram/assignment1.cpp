@@ -24,7 +24,15 @@ void display ( void )
 }
 
 
-
+void changeRotateAngle()
+{
+	if (ROTATE_ANGLE == 360)
+	{
+		ROTATE_ANGLE = 10;
+	}
+	else 
+		ROTATE_ANGLE += 10;
+}
 
 void brushSelection()
 {
@@ -50,62 +58,57 @@ void brushSelection()
 	}
 }
 
+
+void quad(int x, int y)
+{
+	glTranslatef(x, y, 0);
+	glRotatef(ROTATE_ANGLE,0,0,1);
+	
+	glBegin ( GL_QUADS );
+		glVertex2f (-SIZE, SIZE);
+		glVertex2f (-SIZE,-SIZE);
+		glVertex2f (SIZE, -SIZE);
+		glVertex2f (SIZE, SIZE);
+	glEnd ( );
+	glFlush ( );
+	
+	glRotatef(ROTATE_ANGLE,0,0,-1);
+	glTranslatef(-x, -y, 0);
+
+
+}
+
 void triangle(int x, int y)
 {
+	glTranslatef(x, y, 0);
+	glRotatef(ROTATE_ANGLE,0,0,1);
+		
 	glBegin(GL_TRIANGLES);
-		glVertex2f(x-(2*SIZE),y-(2*SIZE));
-		glVertex2f(x+(2*SIZE),y-(2*SIZE));
-		glVertex2f(x,y+(2*SIZE));
+		glVertex2f(-SIZE,-SIZE);
+		glVertex2f(SIZE,-SIZE);
+		glVertex2f(0,SIZE);
 	glEnd();
 	glFlush ( );
+
+	glRotatef(ROTATE_ANGLE,0,0,-1);
+	glTranslatef(-x, -y, 0);
 }
 
 void line(int x, int y)
 {
+	glTranslatef(x, y, 0);
+	glRotatef(ROTATE_ANGLE,0,0,1);
+	
 	glBegin(GL_LINES);
-		glVertex2f(x,y-(2*SIZE));
-		glVertex2f(x,y+(2*SIZE));
+		glVertex2f(0,-SIZE);
+		glVertex2f(0,SIZE);
 	glEnd();
 	glFlush ( );
+
+	glRotatef(ROTATE_ANGLE,0,0,-1);
+	glTranslatef(-x, -y, 0); 
 }
 
-//draw a quadrilateral
-void quad(int x, int y)
-{
-	//glColor3f ( 1, 0, 0 );
-	/*
-	glBegin ( GL_QUADS );
-		glVertex2f ( x-(2*SIZE), y+(2*SIZE));
-		glVertex2f ( x-(2*SIZE), y-(2*SIZE));
-		glVertex2f ( x+(2*SIZE), y-(2*SIZE));
-		glVertex2f ( x+(2*SIZE), y+(2*SIZE));
-	glEnd ( );*/
-
-	glBegin ( GL_QUADS );
-		glVertex2f ( 0-(2*SIZE), 0+(2*SIZE));
-		glVertex2f ( 0-(2*SIZE), 0-(2*SIZE));
-		glVertex2f ( 0+(2*SIZE), 0-(2*SIZE));
-		glVertex2f ( 0+(2*SIZE), 0+(2*SIZE));
-	glEnd ( );
-	
-	
-
-
-	/*
-	glPushMatrix();
-		glBegin ( GL_QUADS );
-			glVertex2f ( 0-(2*SIZE), 0+(2*SIZE));
-			glVertex2f ( 0-(2*SIZE), 0-(2*SIZE));
-			glVertex2f ( 0+(2*SIZE), 0-(2*SIZE));
-			glVertex2f ( 0+(2*SIZE), 0+(2*SIZE));
-		glEnd ( );
-	*/
-
-	//glPopMatrix();
-	//float tempX = x;
-	//float tempY = y;
-	glFlush ( );
-}
 
 void circle(int x, int y)
 {
@@ -113,24 +116,15 @@ void circle(int x, int y)
 		for (int i=0; i<=360;i++)
 		{
 			float temp = i; 
-			glVertex2f((2*SIZE)*cos(temp)+x,(2*SIZE)*sin(temp)+y);
+			glVertex2f(SIZE*cos(temp)+x,SIZE*sin(temp)+y);
 		}
 	glEnd();
 	glFlush();
 }
 
 
-void changeRotateAngle()
-{
-	if (ROTATE_ANGLE == 360)
-	{
-		ROTATE_ANGLE = 10;
-	}
-	else 
-		ROTATE_ANGLE += 10;
-}
 
-//accept keyboard input
+
 void keyboard ( unsigned char key, int x, int y )
 {
 	switch ( key )
@@ -140,7 +134,7 @@ void keyboard ( unsigned char key, int x, int y )
 			brushSelection();
 			break;
 		case 'c':
-			glutPostRedisplay ( );
+			glutPostRedisplay( );
 			break;
 		case 'r':
 			changeRotateAngle();
@@ -155,8 +149,8 @@ void keyboard ( unsigned char key, int x, int y )
 			{
 				SIZE = SIZE*2;
 			}
-			
 			break;
+
 		case '-':
 			if (SIZE != 1)
 			{
@@ -188,7 +182,6 @@ void keyboard ( unsigned char key, int x, int y )
 			glColor3f ( 1, 1, 1 );//white
 			break;
 
-
 		default:
 			break;
 	}
@@ -207,7 +200,7 @@ void init ( void )
 	glEnable(GL_BLEND); // needed for circle blend effect
 }
 
-/*
+
 void mouseMove ( int x, int y )
 {
 	if (QUAD == true)
@@ -227,24 +220,20 @@ void mouseMove ( int x, int y )
 		circle(x,y);
 	}
 }
-*/
+
 void mouseClick(int button, int state, int x, int y)
 {
 	if (QUAD == true)
 	{
-		glTranslatef(x, y, 0);
-		glRotatef(ROTATE_ANGLE,0,0,1);
-		quad(x,y);
-		glRotatef(ROTATE_ANGLE,0,0,-1);
-		glTranslatef(-x, -y, 0);
-		
+		quad(x,y);	
 	}
 	else if (TRIANGLE == true)
 	{
-		triangle(x,y);
+		triangle(x, y);
 	}
 	else if (LINE == true)
 	{
+	
 		line(x,y);
 	}
 	else if (CIRCLE == true)
@@ -258,11 +247,11 @@ int main ( int argc, char *argv[] )
 	glutInit(&argc, argv);
     glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize (WINDOW_WIDTH, WINDOW_HEIGHT); 
-    glutInitWindowPosition (100, 100);
+    glutInitWindowPosition (200, 100);
     glutCreateWindow ("Jose Manriquez - Assignment 1");
     init ();
     glutDisplayFunc(display);
-	//glutMotionFunc ( mouseMove );
+	glutMotionFunc ( mouseMove );
 	glutKeyboardFunc ( keyboard );
 	glutMouseFunc(mouseClick);
 	glutMainLoop ( );
