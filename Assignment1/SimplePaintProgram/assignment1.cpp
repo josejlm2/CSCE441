@@ -12,16 +12,12 @@
 //GLOBAL VARIABLES
 float SIZE = 1;
 float ROTATE_ANGLE = 0;
-bool QUAD = true;
-bool TRIANGLE = false;
-bool LINE = false;
-bool CIRCLE = false;
-
-void display ( void )
-{
-	glClear ( GL_COLOR_BUFFER_BIT );
-	glFlush ( );//make sure everything is drawn
-}
+float TRANSPARENCY_LEVEL = 0.2;
+bool isTRANS = false;
+bool isQUAD = true;
+bool isTRIANGLE = false;
+bool isLINE = false;
+bool isCIRCLE = false;
 
 
 void changeRotateAngle()
@@ -36,31 +32,33 @@ void changeRotateAngle()
 
 void brushSelection()
 {
-	if (QUAD == true)
+	if (isQUAD == true)
 	{
-		QUAD = false;
-		TRIANGLE = true;
+		isQUAD = false;
+		isTRIANGLE = true;
 	}
-	else if (TRIANGLE == true)
+	else if (isTRIANGLE == true)
 	{
-		TRIANGLE = false;
-		LINE = true;
+		isTRIANGLE = false;
+		isLINE = true;
 	}
-	else if (LINE == true)
+	else if (isLINE == true)
 	{
-		LINE = false;
-		CIRCLE = true;
+		isLINE = false;
+		isCIRCLE = true;
 	}
-	else if (CIRCLE == true)
+	else if (isCIRCLE == true)
 	{
-		CIRCLE = false;
-		QUAD = true;
+		isCIRCLE = false;
+		isQUAD = true;
 	}
 }
 
 
 void quad(int x, int y)
 {
+	
+	isTRANS = false;
 	glTranslatef(x, y, 0);
 	glRotatef(ROTATE_ANGLE,0,0,1);
 	
@@ -74,8 +72,6 @@ void quad(int x, int y)
 	
 	glRotatef(ROTATE_ANGLE,0,0,-1);
 	glTranslatef(-x, -y, 0);
-
-
 }
 
 void triangle(int x, int y)
@@ -109,10 +105,9 @@ void line(int x, int y)
 	glTranslatef(-x, -y, 0); 
 }
 
-
 void circle(int x, int y)
 {
-	glBegin(GL_POLYGON);
+	glBegin(GL_TRIANGLE_FAN);
 		for (int i=0; i<=360;i++)
 		{
 			float temp = i; 
@@ -123,6 +118,63 @@ void circle(int x, int y)
 }
 
 
+
+//initalize
+void init ( void )
+{
+	printf( "OpenGL version: %s\n", (char*)glGetString(GL_VERSION));
+    printf( "OpenGL renderer: %s\n", (char*)glGetString(GL_RENDERER));
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0.0, WINDOW_WIDTH-1, WINDOW_HEIGHT-1, 0, -1.0, 1.0);
+	glMatrixMode(GL_MODELVIEW);
+}
+
+void display ( void )
+{
+	glClear ( GL_COLOR_BUFFER_BIT );
+	glFlush ( );//make sure everything is drawn
+}
+
+void mouseClick(int button, int state, int x, int y)
+{
+	if (isQUAD == true)
+	{
+		quad(x,y);	
+	}
+	else if (isTRIANGLE == true)
+	{
+		triangle(x, y);
+	}
+	else if (isLINE == true)
+	{
+		line(x,y);
+	}
+	else if (isCIRCLE == true)
+	{
+		circle(x,y);
+	}
+}
+
+void mouseMove ( int x, int y )
+{
+	if (isQUAD == true)
+	{
+		quad(x,y);
+	}
+	else if (isTRIANGLE == true)
+	{
+		triangle(x,y);
+	}
+	else if (isLINE == true)
+	{
+		line(x,y);
+	}
+	else if (isCIRCLE == true)
+	{
+		circle(x,y);
+	}
+}
 
 
 void keyboard ( unsigned char key, int x, int y )
@@ -140,8 +192,8 @@ void keyboard ( unsigned char key, int x, int y )
 			changeRotateAngle();
 			break;
 		case 'a':
+			TRANSPARENCY_LEVEL = 0.1;
 			break;
-
 
 		//RESIZE BRUSH
 		case '+':
@@ -161,25 +213,26 @@ void keyboard ( unsigned char key, int x, int y )
 
 		//COLORS
 		case '1':
-			glColor3f ( 1, 0, 0 );//red
+			glColor4f ( 1, 0, 0, TRANSPARENCY_LEVEL);//red
 			break;
 		case '2':
-			glColor3f ( 0, 1, 0 );//green
+			glColor4f ( 0, 1, 0, TRANSPARENCY_LEVEL);//green
+			glFlush();
 			break;
 		case '3':
-			glColor3f ( 1, 1, 0 );//blue
+			glColor4f ( 1, 1, 0, TRANSPARENCY_LEVEL);//blue
 			break;
 		case '4':
-			glColor3f ( 0, 0, 1 );//yellow
+			glColor4f ( 0, 0, 1, TRANSPARENCY_LEVEL);//yellow
 			break;
 		case '5':
-			glColor3f ( 1, 0, 1 );//pink
+			glColor4f ( 1, 0, 1, TRANSPARENCY_LEVEL);//pink
 			break;
 		case '6':
-			glColor3f ( 0, 1, 1 );//cyan
+			glColor4f ( 0, 1, 1, TRANSPARENCY_LEVEL);//cyan
 			break;
 		case '7':
-			glColor3f ( 1, 1, 1 );//white
+			glColor4f ( 1, 1, 1, TRANSPARENCY_LEVEL);//white
 			break;
 
 		default:
@@ -187,60 +240,6 @@ void keyboard ( unsigned char key, int x, int y )
 	}
 }
 
-//initalize
-void init ( void )
-{
-	printf( "OpenGL version: %s\n", (char*)glGetString(GL_VERSION));
-    printf( "OpenGL renderer: %s\n", (char*)glGetString(GL_RENDERER));
-    glClearColor (0.0, 0.0, 0.0, 0.0);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0.0, WINDOW_WIDTH-1, WINDOW_HEIGHT-1, 0, -1.0, 1.0);
-	glMatrixMode(GL_MODELVIEW);
-	glEnable(GL_BLEND); // needed for circle blend effect
-}
-
-
-void mouseMove ( int x, int y )
-{
-	if (QUAD == true)
-	{
-		quad(x,y);
-	}
-	else if (TRIANGLE == true)
-	{
-		triangle(x,y);
-	}
-	else if (LINE == true)
-	{
-		line(x,y);
-	}
-	else if (CIRCLE == true)
-	{
-		circle(x,y);
-	}
-}
-
-void mouseClick(int button, int state, int x, int y)
-{
-	if (QUAD == true)
-	{
-		quad(x,y);	
-	}
-	else if (TRIANGLE == true)
-	{
-		triangle(x, y);
-	}
-	else if (LINE == true)
-	{
-	
-		line(x,y);
-	}
-	else if (CIRCLE == true)
-	{
-		circle(x,y);
-	}
-}
 
 int main ( int argc, char *argv[] )
 {
@@ -249,11 +248,20 @@ int main ( int argc, char *argv[] )
     glutInitWindowSize (WINDOW_WIDTH, WINDOW_HEIGHT); 
     glutInitWindowPosition (200, 100);
     glutCreateWindow ("Jose Manriquez - Assignment 1");
-    init ();
+	glEnable(GL_BLEND); // needed for circle blend effect
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glEnable(GL_POINT_SMOOTH);
+            glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+            glEnable(GL_LINE_SMOOTH);
+            glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+            glEnable(GL_POLYGON_SMOOTH);
+            glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+    glClearColor (0.0, 0.0, 0.0, 0.0);
+	init ();
     glutDisplayFunc(display);
+	glutMouseFunc(mouseClick);
 	glutMotionFunc ( mouseMove );
 	glutKeyboardFunc ( keyboard );
-	glutMouseFunc(mouseClick);
 	glutMainLoop ( );
 	return 0;
 }
