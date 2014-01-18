@@ -12,7 +12,7 @@
 //GLOBAL VARIABLES
 float SIZE = 1;
 float ROTATE_ANGLE = 0;
-float TRANSPARENCY_LEVEL = 0.2;
+float TRANSPARENCY_LEVEL = 1.0;
 bool isTRANS = false;
 bool isQUAD = true;
 bool isTRIANGLE = false;
@@ -192,7 +192,7 @@ void keyboard ( unsigned char key, int x, int y )
 			changeRotateAngle();
 			break;
 		case 'a':
-			TRANSPARENCY_LEVEL = 0.1;
+			//TRANSPARENCY_LEVEL = 0.1;
 			break;
 
 		//RESIZE BRUSH
