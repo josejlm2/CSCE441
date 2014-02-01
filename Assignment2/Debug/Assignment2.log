@@ -1,0 +1,20 @@
+﻿Build started 9/22/2013 12:10:01 PM.
+     1>Project "C:\Users\Jo\documents\visual studio 2012\Projects\Assignment2\Assignment2\Assignment2.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\Assignment2.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Assignment2.cpp
+         Assignment2.cpp
+     1>c:\users\jo\documents\visual studio 2012\projects\assignment2\assignment2\linkedlist.cpp(11): warning C4091: 'typedef ' : ignored on left of 'node' when no variable is declared
+     1>c:\users\jo\documents\visual studio 2012\projects\assignment2\assignment2\linkedlist.cpp(20): warning C4091: 'typedef ' : ignored on left of 'edge' when no variable is declared
+     1>c:\users\jo\documents\visual studio 2012\projects\assignment2\assignment2\assignment2.cpp(160): warning C4551: function call missing argument list
+     1>c:\users\jo\documents\visual studio 2012\projects\assignment2\assignment2\assignment2.cpp(152): warning C4101: 'edge1' : unreferenced local variable
+     1>c:\users\jo\documents\visual studio 2012\projects\assignment2\assignment2\assignment2.cpp(290): warning C4700: uninitialized local variable 'height' used
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jo\documents\visual studio 2012\Projects\Assignment2\Debug\Assignment2.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Jo\documents\visual studio 2012\Projects\Assignment2\Debug\Assignment2.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jo\documents\visual studio 2012\Projects\Assignment2\Debug\Assignment2.lib" /MACHINE:X86 Debug\Assignment2.obj
+         Debug\LinkedList.obj
+         Debug\stdafx.obj
+         Assignment2.vcxproj -> C:\Users\Jo\documents\visual studio 2012\Projects\Assignment2\Debug\Assignment2.exe
+     1>Done Building Project "C:\Users\Jo\documents\visual studio 2012\Projects\Assignment2\Assignment2\Assignment2.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:04.20
