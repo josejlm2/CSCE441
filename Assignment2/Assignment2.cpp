@@ -1,3 +1,5 @@
+
+
 // Assignment2.cpp : Defines the entry point for the console application.
 //
 #include "stdafx.h"
@@ -7,6 +9,7 @@
 #include<GL/glut.h>
 #include <utility>     
 #include <string>
+#include <list>
 
 using namespace std;
 
@@ -211,7 +214,7 @@ void mouseClick(int button, int state, int x, int y)
 		cout<<"END POLYGON"<<endl;
 		
 		//store poinst into the edges vector
-		cout<<endl<<"LINES"<<endl;
+		cout<<endl<<"EDGES"<<endl;
 		for (int i=0; i<tempCounter-1;i++)
 		{
 			edges.push_back(make_pair(points.at(i++),points.at(i)));
@@ -236,14 +239,15 @@ void mouseClick(int button, int state, int x, int y)
 			tempMaxY = max(tempMaxY, tempY);
 			
 			
-			//printout lines
-			cout<<"LINES"<<lineCounter<<": ("<<x1<<", "<<y1<<") -> ("<<x2<<", "<<y2<<")"<<endl;
+			//printout Edges
+			cout<<"EDGES"<<lineCounter<<": ("<<x1<<", "<<y1<<") -> ("<<x2<<", "<<y2<<")"<<endl;
 			++lineCounter;
 
 			//Convert lines into Edges ready for Active Edge List
 			edge *temp;
 			temp = (edge*)malloc(sizeof(edge));
 			temp->maxY = max(y1,y2);
+			temp->minY = min(y1,y2);
 			if (y1<y2)
 			{
 				temp->currentX = x1;
@@ -262,6 +266,7 @@ void mouseClick(int button, int state, int x, int y)
 		{
 			edge *result = (*i);
 			cout<<"MaxY: "<<result->maxY<<endl;
+			cout<<"MinY: "<<result->minY<<endl;
 			cout<<"CurrentX: "<<result->currentX<<endl;
 			cout<<"xIncr: "<< result->xIncr<<endl<<endl;	
 		
@@ -271,6 +276,39 @@ void mouseClick(int button, int state, int x, int y)
 		cout<<"MAX Y: "<< tempMaxY<<endl;
 		cout<<"MIN Y: "<< tempMinY<<endl;
 
+		vector<list<edge *>> activeEdgeTable;
+		activeEdgeTable.resize(tempMaxY);
+
+		for (int k=tempMinY; k<=tempMaxY;k++)
+		{
+			for( std::vector<edge *>::const_iterator i = allEdges.begin(); i != allEdges.end(); ++i)
+			{
+				edge *result = (*i);
+
+				if (result->minY == k)//add edge to list
+				{
+					
+					/*if (activeEdgeTable.at(k).front == NULL)
+					{
+						list<edge *> a;
+						a.push_back(*i);
+						activeEdgeTable.at(k).merge(a);		
+					}
+					else*/
+					activeEdgeTable.at(k).push_back(*i);
+					cout<<"k"<<k<<" ";
+				}
+
+			/*cout<<"MaxY: "<<result->maxY<<endl;
+			cout<<"MinY: "<<result->minY<<endl;
+			cout<<"CurrentX: "<<result->currentX<<endl;
+			cout<<"xIncr: "<< result->xIncr<<endl<<endl;	
+		*/
+			}	
+			//activeEdgetable.at(i);
+		
+		}
+		
 		//Clear vectors
 		points.clear();
 		edges.clear();

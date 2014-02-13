@@ -2,18 +2,17 @@
 #include <iostream>
 using namespace std;
 
-
-typedef struct node                                                
-{                                                               
-	int nodeX;
-	int nodeY;       // stores point information
-    node *next;             // the reference to the next node
-}; 
-
-
 typedef struct edge
 {
 	float maxY;
+	float minY;
 	float currentX;
 	float xIncr;
 };
+
+
+typedef struct node                                                
+{             
+	edge edges;       // stores point information
+    node *next;       // the reference to the next node
+}; 
